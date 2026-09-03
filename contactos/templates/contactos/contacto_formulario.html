@@ -1,0 +1,120 @@
+{% extends 'contactos/base.html' %}
+
+{% block title %}{{ titulo_accion }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Navegación de migas de pan -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'contacto_lista' %}">Directorio</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ titulo_accion }}</li>
+            </ol>
+        </nav>
+
+        <div class="card card-custom">
+            <div class="card-header bg-white border-0 pt-4 px-4 pb-2">
+                <h3 class="fw-bold text-dark mb-1">
+                    <i class="bi {% if contacto %}bi-pencil-square text-warning{% else %}bi-person-plus text-primary{% endif %} me-2"></i>
+                    {{ titulo_accion }}
+                </h3>
+                <p class="text-muted small">
+                    Completa la información requerida para el registro del contacto en la agenda.
+                </p>
+            </div>
+
+            <div class="card-body px-4 py-3">
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="row g-3">
+                        <!-- Nombre Completo -->
+                        <div class="col-md-12">
+                            <label for="{{ form.nombre_completo.id_for_label }}" class="form-label fw-semibold">
+                                {{ form.nombre_completo.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.nombre_completo }}
+                            {% if form.nombre_completo.errors %}
+                                <div class="text-danger small mt-1">{{ form.nombre_completo.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Correo Electrónico -->
+                        <div class="col-md-6">
+                            <label for="{{ form.correo.id_for_label }}" class="form-label fw-semibold">
+                                {{ form.correo.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.correo }}
+                            {% if form.correo.errors %}
+                                <div class="text-danger small mt-1">{{ form.correo.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Teléfono / Celular -->
+                        <div class="col-md-6">
+                            <label for="{{ form.telefono.id_for_label }}" class="form-label fw-semibold">
+                                {{ form.telefono.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.telefono }}
+                            {% if form.telefono.errors %}
+                                <div class="text-danger small mt-1">{{ form.telefono.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Ciudad -->
+                        <div class="col-md-6">
+                            <label for="{{ form.ciudad.id_for_label }}" class="form-label fw-semibold">
+                                {{ form.ciudad.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.ciudad }}
+                            {% if form.ciudad.errors %}
+                                <div class="text-danger small mt-1">{{ form.ciudad.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Empresa o Dependencia -->
+                        <div class="col-md-6">
+                            <label for="{{ form.empresa_dependencia.id_for_label }}" class="form-label fw-semibold">
+                                {{ form.empresa_dependencia.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.empresa_dependencia }}
+                            {% if form.empresa_dependencia.errors %}
+                                <div class="text-danger small mt-1">{{ form.empresa_dependencia.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Tipo de Contacto -->
+                        <div class="col-md-12">
+                            <label for="{{ form.tipo_contacto.id_for_label }}" class="form-label fw-semibold">
+                                {{ form.tipo_contacto.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.tipo_contacto }}
+                            {% if form.tipo_contacto.errors %}
+                                <div class="text-danger small mt-1">{{ form.tipo_contacto.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                        <a href="{% if contacto %}{% url 'contacto_detalle' contacto.pk %}{% else %}{% url 'contacto_lista' %}{% endif %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4 py-2">
+                            <i class="bi bi-check-lg me-1"></i> {{ boton_texto }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
