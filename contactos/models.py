@@ -1,4 +1,16 @@
 from django.db import models
+from django.core.validators import RegexValidator
+
+
+nombre_sin_numeros = RegexValidator(
+    regex=r'^[^0-9]*$',
+    message='El nombre no puede contener números.'
+)
+
+telefono_solo_numeros = RegexValidator(
+    regex=r'^[0-9]+$',
+    message='El teléfono solo puede contener números.'
+)
 
 class Contacto(models.Model):
     TIPO_CHOICES = [
@@ -10,7 +22,8 @@ class Contacto(models.Model):
 
     nombre_completo = models.CharField(
         max_length=120,
-        verbose_name="Nombre Completo"
+        verbose_name="Nombre Completo",
+        validators=[nombre_sin_numeros]
     )
     correo = models.EmailField(
         max_length=100,
@@ -18,7 +31,8 @@ class Contacto(models.Model):
     )
     telefono = models.CharField(
         max_length=20,
-        verbose_name="Teléfono / Celular"
+        verbose_name="Teléfono / Celular",
+        validators=[telefono_solo_numeros]
     )
     ciudad = models.CharField(
         max_length=80,
